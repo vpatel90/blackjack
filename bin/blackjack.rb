@@ -21,6 +21,17 @@ class Player
 
   def turn
     puts "Would you like to (H)it or (S)tay"
+    print " > "
+    input = validate(gets.chomp)
+  end
+
+  def validate(input)
+    case input.upcase
+    when "H", "S"
+    else
+      puts "Enter Valid input"
+      turn
+    end
   end
 
 end
