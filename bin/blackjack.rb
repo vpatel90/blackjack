@@ -28,6 +28,7 @@ class Player
   def validate(input)
     case input.upcase
     when "H", "S"
+      return input.upcase
     else
       puts "Enter Valid input"
       turn
@@ -51,8 +52,6 @@ class Dealer
   def add_points
     @points += @hand.last.rank
   end
-
-
 end
 
 class Game
@@ -67,14 +66,26 @@ class Game
     deal_cards
     check_dealer_blackjack
 
-    @p1.turn
-
     @p1.display_hand
     puts @p1.points
     @d1.display_one_card
     puts @d1.points
 
+    player_turn
 
+    @p1.display_hand
+    puts @p1.points
+
+  end
+
+  def player_turn
+    choice = @p1.turn
+    case choice
+    when "H"
+      hit(@p1)
+    else
+      exit
+    end
   end
 
   def deal_cards
