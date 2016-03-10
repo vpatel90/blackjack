@@ -37,6 +37,15 @@ class Player
       turn
     end
   end
+
+  def player_win_check(entity)
+    if entity.name != @name
+      winner = entity
+      return @name
+    else
+      return "Dealer"
+    end
+  end
 end
 
 class Dealer
@@ -117,23 +126,10 @@ class Game
       @d1.hand.push(@deck.deal)
       @d1.add_points
     end
-    ##Code to push specific cards
-    # aces = @deck.cards.select do |obj|
-    #   obj.set_rank == 11
-    # end
-    #
-    # tens = @deck.cards.select do |obj|
-    #   obj.set_rank == 10
-    # end
-    #  @d1.hand.push(aces.pop)
-    #  @d1.add_points
-    #  @d1.hand.push(tens.pop)
-    #  @d1.add_points
-    #  puts @d1.points
   end
 
   def check_blackjack(entity, dealer = false)
-    if dealer = false
+    if dealer == false
       if entity.points == 21
         puts "#{entity.name} has Blackjack"
         point_check
@@ -160,33 +156,36 @@ class Game
       if entity.num_aces > 0
         entity.num_aces -= 1
         entity.points -=10
-        puts "#{entity.name} has #{entity.points} points"
+        #puts "#{entity.name} has #{entity.points} points"
         entity_turn(entity)
       else
-        puts "#{entity.name} has #{entity.points} points"
+        #puts "#{entity.name} has #{entity.points} points"
         puts "#{entity.name} busts!"
-        game_end
+        winner = @p1.player_win_check(entity)
+        game_end(winner)
       end
     else
-      puts "#{entity.name} has #{entity.points} points"
+      #puts "#{entity.name} has #{entity.points} points"
       entity_turn(entity)
     end
   end
 
   def point_check
-    puts "#{@p1.name} has #{@p1.points} points"
-    puts "#{@d1.name} has #{@d1.points} points"
+    #puts "#{@p1.name} has #{@p1.points} points"
+    #puts "#{@d1.name} has #{@d1.points} points"
     if @p1.points > @d1.points
-      puts "#{@p1.name} Wins!"
+      winner = @p1.name
     elsif @p1.points < @d1.points
-      puts "#{@d1.name} Wins!"
+      winner = @d1.name
     else
       puts "It's a tie"
+      winner = "No one"
     end
-    game_end
+    game_end(winner)
   end
 
-  def game_end
+  def game_end(winner)
+    puts "#{winner} wins!"
     puts "good game!"
     exit
   end
