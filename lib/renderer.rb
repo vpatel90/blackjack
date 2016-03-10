@@ -1,3 +1,7 @@
+require_relative '../lib/player'
+require_relative '../lib/dealer'
+require_relative '../lib/game_play'
+
 class Renderer
   def initialize(player,dealer)
     @player = player
@@ -5,6 +9,9 @@ class Renderer
     @moves = []
   end
 
+  def reset
+    @moves = []
+  end
   def render_title
     system"clear"
     puts "BLACKJACK TIME!"
