@@ -69,7 +69,6 @@ class Game
     @d1.display_one_card
     check_dealer_blackjack
     check_bust(@p1)
-
   end
 
   def entity_turn(entity)
@@ -116,6 +115,10 @@ class Game
     puts "#{entity.name} hits"
     entity.hand.push(@deck.deal)
     entity.add_points
+  end
+
+  def stay(entity)
+    puts "#{entity.name} stays"
   end
 
   def check_bust(entity)
