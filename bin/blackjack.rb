@@ -2,9 +2,9 @@ require_relative '../lib/card'
 require_relative '../lib/deck'
 
 class Player
-  attr_accessor :name, :hand, :points, :id
+  attr_accessor :name, :hand, :points, :num_aces
   def initialize(name = 'Player')
-    @id = "PLAYER"
+    @num_aces = 0
     @name = name
     @hand = []
     @points = 0
@@ -18,6 +18,7 @@ class Player
 
   def add_points
     @points += @hand.last.set_rank
+    @num_aces += 1 if @hand.last.set_rank == 11
     puts @points
   end
 
@@ -39,11 +40,12 @@ class Player
 end
 
 class Dealer
-  attr_accessor :hand, :points, :name
+  attr_accessor :hand, :points, :name, :num_aces
   def initialize
     @name = "Dealer"
     @hand = []
     @points = 0
+    @num_aces = 0
   end
 
   def display_one_card
@@ -155,20 +157,16 @@ class Game
 
   def check_bust(entity)
     if entity.points > 21
-      #  if entity.id == "PLAYER"
-      #    entity.hand.each do |card|
-      #      if card.rank == 11
-      #        card.rank == 1
-      #        entity.points -= 10
-      #        break
-      #      end
-      #    end
-      #    puts "#{entity.name} has #{entity.points} points"
-      #    entity_turn(entity)
-      #  end
-      puts "#{entity.name} has #{entity.points} points"
-      puts "#{entity.name} busts!"
-      game_end
+      if entity.num_aces > 0
+        entity.num_aces -= 1
+        entity.points -=10
+        puts "#{entity.name} has #{entity.points} points"
+        entity_turn(entity)
+      else
+        puts "#{entity.name} has #{entity.points} points"
+        puts "#{entity.name} busts!"
+        game_end
+      end
     else
       puts "#{entity.name} has #{entity.points} points"
       entity_turn(entity)
