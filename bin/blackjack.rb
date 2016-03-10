@@ -7,7 +7,8 @@ require_relative '../lib/game_play'
 
 class Game
   def initialize(epic=false)
-    @deck = Deck.new(epic)
+    @epic=epic
+    @deck = Deck.new(@epic)
     @deck.shuffle_deck
     @p1 = Player.new
     @d1 = Dealer.new
@@ -15,6 +16,9 @@ class Game
   end
 
   def start_round
+    if @deck.cards.length < 20
+      @deck=Deck.new(@epic)
+    end
     new_round = GamePlay.new(@p1, @d1, @renderer)
     winner = new_round.start_round(@deck)
     play_again
