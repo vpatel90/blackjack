@@ -29,7 +29,7 @@ class Dealer
   end
 
   def turn
-    if @points < 16
+    if @points <= 16
       puts "Dealer is thinking"
       sleep 1
       return "H"
