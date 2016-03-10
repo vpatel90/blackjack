@@ -38,8 +38,9 @@ class Player
 end
 
 class Dealer
-  attr_accessor :hand, :points
+  attr_accessor :hand, :points, :name
   def initialize
+    @name = "Dealer"
     @hand = []
     @points = 0
   end
@@ -51,6 +52,24 @@ class Dealer
 
   def add_points
     @points += @hand.last.rank
+  end
+
+  def turn
+    puts "Dealer is thinking"
+    sleep 0.5
+    if @points < 16
+      return "H"
+    else
+      return :d_stay
+    end
+  end
+
+  def dealer_busts
+    puts "Dealer Busts"
+  end
+
+  def dealer_stays
+    puts "Dealer Stays"
   end
 end
 
@@ -77,6 +96,11 @@ class Game
     when "H"
       hit(entity)
       check_bust(entity)
+    when "S"
+      stay(entity)
+    when :d_stay
+      entity.dealer_stays
+      point_check
     else
       exit
     end
@@ -119,12 +143,13 @@ class Game
 
   def stay(entity)
     puts "#{entity.name} stays"
+    check_bust(@d1)
   end
 
   def check_bust(entity)
     if entity.points > 21
       puts "#{entity.name} has #{entity.points} points"
-      puts "You bust!"
+      puts "#{entity.name} busts!"
       game_end
     else
       puts "#{entity.name} has #{entity.points} points"
