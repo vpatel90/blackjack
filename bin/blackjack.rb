@@ -64,25 +64,20 @@ class Game
     @p1 = Player.new
     @d1 = Dealer.new
     deal_cards
-    check_dealer_blackjack
 
     @p1.display_hand
-    puts @p1.points
     @d1.display_one_card
-    puts @d1.points
-
-    player_turn
-
-    @p1.display_hand
-    puts @p1.points
+    check_dealer_blackjack
+    check_bust(@p1)
 
   end
 
-  def player_turn
-    choice = @p1.turn
+  def entity_turn(entity)
+    choice = entity.turn
     case choice
     when "H"
-      hit(@p1)
+      hit(entity)
+      check_bust(entity)
     else
       exit
     end
@@ -95,16 +90,43 @@ class Game
       @d1.hand.push(@deck.deal)
       @d1.add_points
     end
+    ##Code to push specific cards
+    # aces = @deck.cards.select do |obj|
+    #   obj.rank == 11
+    # end
+    #
+    # tens = @deck.cards.select do |obj|
+    #   obj.rank == 10
+    # end
+    #  @d1.hand.push(aces.pop)
+    #  @d1.add_points
+    #  @d1.hand.push(tens.pop)
+    #  @d1.add_points
+    #  puts @d1.points
   end
 
   def check_dealer_blackjack
-    game_end if @d1.points == 21
+    if @d1.points == 21 && @d1.hand[0].rank == 11
+      puts "Sorry Dealer Blackjack"
+      game_end
+    end
   end
 
-  def hit(player)
-    puts "#{player.name} hits"
-    player.hand.push(@deck.deal)
-    player.add_points
+  def hit(entity)
+    puts "#{entity.name} hits"
+    entity.hand.push(@deck.deal)
+    entity.add_points
+  end
+
+  def check_bust(entity)
+    if entity.points > 21
+      puts "#{entity.name} has #{entity.points} points"
+      puts "You bust!"
+      game_end
+    else
+      puts "#{entity.name} has #{entity.points} points"
+      entity_turn(entity)
+    end
   end
 
   def game_end

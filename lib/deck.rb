@@ -1,5 +1,5 @@
 class Deck
-  attr_reader :deck
+  attr_reader :cards
 
   def initialize
     @cards = []
@@ -22,4 +22,5 @@ class Deck
   def deal
     @cards.shift
   end
+
 end
