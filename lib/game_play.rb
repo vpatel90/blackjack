@@ -66,7 +66,6 @@ class GamePlay
         entity.points -=10
         entity_turn(entity)
       else
-        #puts "#{entity.name} has #{entity.points} points"
         @renderer.render_last_move(entity, "busts!")
         winner = @player.player_win_check(entity)
         game_end(winner)
@@ -111,8 +110,6 @@ class GamePlay
   end
 
   def point_check
-    #puts "#{@p1.name} has #{@p1.points} points"
-    #puts "#{@d1.name} has #{@d1.points} points"
     if @player.points > @dealer.points
       winner = @player.name
     elsif @player.points < @dealer.points
@@ -137,7 +134,6 @@ class GamePlay
   end
 
   def add_score(winner)
-
     case winner
     when @player.name
       @player.wins += 1
