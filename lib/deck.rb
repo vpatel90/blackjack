@@ -1,7 +1,7 @@
 class Deck
   attr_reader :cards
 
-  def initialize
+  def initialize(epic=false)
     @cards = []
     suits = [:hearts, :diamonds, :spades, :clubs]
     suits.each do |suit|
@@ -13,6 +13,7 @@ class Deck
       @cards << Card.new(suit, "K")
       @cards << Card.new(suit, "A")
     end
+    @cards = @cards * 6 if epic == true
   end
 
   def shuffle_deck
